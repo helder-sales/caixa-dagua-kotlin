@@ -2,9 +2,13 @@ package com.example.caixa_dagua_kotlin
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
+import com.example.caixa_dagua_kotlin.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -13,24 +17,23 @@ import java.net.InetSocketAddress
 import java.net.Socket
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var genericTextView: TextView
+    private lateinit var binding: ActivityMainBinding
     private lateinit var data: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        genericTextView = findViewById(R.id.generic_textView)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     fun buttonPressed(view: View) {
         when(view.id) {
-            R.id.generic_button_2 -> genericTextView.text = "Button 2 pressed"
             R.id.generic_button -> {
-                GlobalScope.launch(Dispatchers.Main) {
+                lifecycleScope.launch(Dispatchers.Main) {
                     tcpComm("test")
                 }
             }
+            R.id.generic_button_2 -> binding.genericTextView.text = "Button 2 pressed"
         }
     }
 
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         value.await()
-        genericTextView.text = data
+        binding.genericTextView.text = data
     }
 }
 
