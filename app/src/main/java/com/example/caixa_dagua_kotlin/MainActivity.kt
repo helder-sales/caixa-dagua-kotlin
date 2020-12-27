@@ -28,29 +28,31 @@ class MainActivity : AppCompatActivity() {
             R.id.generic_button_2 -> genericTextView.text = "Button 2 pressed"
             R.id.generic_button -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    messageTransceiver("test")
+                    tcpComm("test")
                 }
             }
         }
     }
 
-    private suspend fun messageTransceiver(message: String?) {
+    private suspend fun tcpComm(message: String) {
         val value = GlobalScope.async(Dispatchers.IO) {
             try {
                 Socket().use { socket ->
                     val sockAdr = InetSocketAddress("192.168.15.11", 49152)
                     socket.connect(sockAdr, 3000)
                     socket.soTimeout = 3000
-                    BufferedReader(InputStreamReader(socket.getInputStream())).use { `in` ->
-                        PrintWriter(socket.getOutputStream()).use { printWriter ->
-                            printWriter.write(message ?: "")
-                            printWriter.flush()
-                            data = `in`.readLine()
-                        }
+
+                    BufferedReader(InputStreamReader(socket.getInputStream())).use { bufReader ->
+                        val printWriter = PrintWriter(socket.getOutputStream())
+
+                        data = bufReader.readLine()
+                        printWriter.write(message)
+                        printWriter.flush()
                     }
                 }
             } catch (e: IOException) {
                 println("Send Exception: " + e.message)
+                data = "Sem conexão"
             }
         }
 
