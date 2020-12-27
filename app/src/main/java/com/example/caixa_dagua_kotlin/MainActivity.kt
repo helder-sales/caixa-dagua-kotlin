@@ -24,13 +24,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun buttonPressed(view: View) {
-        val job = GlobalScope.launch(Dispatchers.Main) {
-            messageTransceiver("olar")
+        when(view.id) {
+            R.id.generic_button_2 -> genericTextView.text = "Button 2 pressed"
+            R.id.generic_button -> {
+                GlobalScope.launch(Dispatchers.Main) {
+                    messageTransceiver("test")
+                }
+            }
         }
     }
 
-    suspend fun messageTransceiver(message: String?) {
-        val value = GlobalScope.async {
+    private suspend fun messageTransceiver(message: String?) {
+        val value = GlobalScope.async(Dispatchers.IO) {
             try {
                 Socket().use { socket ->
                     val sockAdr = InetSocketAddress("192.168.15.11", 49152)
@@ -38,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                     socket.soTimeout = 3000
                     BufferedReader(InputStreamReader(socket.getInputStream())).use { `in` ->
                         PrintWriter(socket.getOutputStream()).use { printWriter ->
-                            printWriter.write(message!!)
+                            printWriter.write(message ?: "")
                             printWriter.flush()
                             data = `in`.readLine()
                         }
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         value.await()
-        genericTextView.setText(data)
+        genericTextView.text = data
     }
 }
 
