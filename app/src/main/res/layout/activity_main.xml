@@ -4,40 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/generic_textView"
+    <ImageView
+        android:id="@+id/status_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/generic_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="buttonPressed"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/generic_textView"
+        android:contentDescription="status"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/warning_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:srcCompat="@drawable/ic_ok"
+        tools:visibility="visible" />
 
-    <Button
-        android:id="@+id/generic_button_2"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="buttonPressed"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/warning_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/warning_textView"
+        android:layout_width="379dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/level_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/generic_textView"
-        app:layout_constraintVertical_bias="0.25" />
+        tools:text="Caixa d'água esvaziando" />
+
+    <TextView
+        android:id="@+id/level_textView"
+        android:layout_width="296dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="24dp"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/check_level_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Nível d'água: 100%" />
+
+    <Button
+        android:id="@+id/check_level_button"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="buttonPressed"
+        android:text="Verificar nível"
+        app:layout_constraintBottom_toTopOf="@+id/turn_alarm_off_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/turn_alarm_off_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:drawableStart="@drawable/ic_buzzer_off"
+        android:drawablePadding="6dp"
+        android:gravity="start|center"
+        android:onClick="buttonPressed"
+        android:text="Desligar alarme"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
