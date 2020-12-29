@@ -13,6 +13,7 @@ import kotlin.math.pow
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
+    private var isBusy = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +63,12 @@ class MainActivity : AppCompatActivity() {
                 binding.warningTextView.text = getString(R.string.connection_failed)
                 binding.levelTextView.text = getString(R.string.try_again)
             }
+
+            isBusy = false
         })
 
         lifecycleScope.launch(Dispatchers.Main) {
+            isBusy = true
             viewModel.tcpComm(null)
         }
     }
@@ -76,10 +80,12 @@ class MainActivity : AppCompatActivity() {
         binding.levelTextView.text = ""
 
         when (view.id) {
-            R.id.check_level_button -> lifecycleScope.launch(Dispatchers.Main) {
+            R.id.check_level_button -> if (!isBusy) lifecycleScope.launch(Dispatchers.Main) {
+                isBusy = true
                 viewModel.tcpComm(null)
             }
-            R.id.turn_alarm_off_button -> lifecycleScope.launch(Dispatchers.Main) {
+            R.id.turn_alarm_off_button -> if(!isBusy) lifecycleScope.launch(Dispatchers.Main) {
+                isBusy = true
                 viewModel.tcpComm("off")
             }
         }
