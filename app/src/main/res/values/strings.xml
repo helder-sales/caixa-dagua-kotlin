@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">caixa-dagua-kotlin</string>
+    <string name="app_name">Caixa d\'água</string>
     <string name="water_level_full">Caixa d\'água cheia</string>
     <string name="water_level_dropping">Caixa d\'água esvaziando</string>
     <string name="connection_failed">Conexão morreu :(</string>
