@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
             if (it != "No connection") {
                 val rawData = it.toInt()
-                val waterLevel: Double = (rawData - 1444) / 704.3
+                val waterLevel = (rawData - 1444) / 704.3
                 val waterPercentageLeft = 1.448 * waterLevel.pow(5.0) - 7.451 *
                         waterLevel.pow(4.0) + 13.47 * waterLevel.pow(3.0) - 16.09 *
                         waterLevel.pow(2.0) + 29.96 * waterLevel + 64.13
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                     rawData >= 4095 -> {
                         binding.statusImageView.setImageResource(R.drawable.ic_ok)
                         binding.statusImageView.setColorFilter(getColor(R.color.color_normal))
-                        binding.warningTextView.text = "Caixa d'água cheia"
+                        binding.warningTextView.text = getString(R.string.water_level_full)
                         binding.levelTextView.text = ""
                     }
                     rawData < 4095 -> {
@@ -51,15 +51,16 @@ class MainActivity : AppCompatActivity() {
                                 R.color.color_critical))
                         }
 
-                        binding.warningTextView.text = "Caixa d'água esvaziando"
-                        binding.levelTextView.text = "Nível d'água: $waterPercentageLeft%"
+                        binding.warningTextView.text = getString(R.string.water_level_dropping)
+                        binding.levelTextView.text = getString(R.string.current_water_level,
+                            waterPercentageLeft)
                     }
                 }
             } else {
                 binding.statusImageView.setImageResource(R.drawable.ic_tomb_grave)
                 binding.statusImageView.setColorFilter(getColor(R.color.color_white))
-                binding.warningTextView.text = "Conexão morreu :("
-                binding.levelTextView.text = "Tente novamente"
+                binding.warningTextView.text = getString(R.string.connection_failed)
+                binding.levelTextView.text = getString(R.string.try_again)
             }
         })
 
