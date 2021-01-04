@@ -1,6 +1,10 @@
 package com.example.caixa_dagua_kotlin
 
+import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -17,11 +21,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
 
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.tcpData().observe(this, {
             binding.progressBar.visibility = View.GONE
             binding.statusImageView.visibility = View.VISIBLE
@@ -62,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 binding.statusImageView.setColorFilter(getColor(R.color.color_white))
                 binding.warningTextView.text = getString(R.string.connection_failed)
                 binding.levelTextView.text = getString(R.string.try_again)
+                vibrate(250)
             }
 
             isBusy = false
@@ -89,6 +97,14 @@ class MainActivity : AppCompatActivity() {
                 viewModel.tcpComm("off")
             }
         }
+    }
+
+    private fun Context.vibrate(milliseconds: Long = 500) {
+        val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        if (vibrator.hasVibrator())
+            vibrator.vibrate(VibrationEffect.createOneShot(milliseconds,
+                VibrationEffect.DEFAULT_AMPLITUDE))
     }
 }
 
