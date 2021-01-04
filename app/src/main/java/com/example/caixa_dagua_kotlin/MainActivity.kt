@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.tcpData().observe(this, {
