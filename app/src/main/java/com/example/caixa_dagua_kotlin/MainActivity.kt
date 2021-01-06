@@ -103,14 +103,13 @@ class MainActivity : AppCompatActivity() {
     private fun Context.vibrate(milliseconds: Long = 500) {
         val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (vibrator.hasVibrator())
+        if (vibrator.hasVibrator())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 vibrator.vibrate(VibrationEffect.createOneShot(milliseconds,
                     VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(milliseconds)
-        }
+            else
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(milliseconds)
     }
 }
 
