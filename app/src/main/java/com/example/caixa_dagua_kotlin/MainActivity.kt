@@ -1,5 +1,6 @@
 package com.example.caixa_dagua_kotlin
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Build
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainActivityViewModel
     private var isBusy = false
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,26 +37,23 @@ class MainActivity : AppCompatActivity() {
             binding.statusImageView.visibility = View.VISIBLE
 
             if (it != "No connection") {
-                val rawData = it.toInt()
-                val waterLevel = (rawData - 1444) / 704.3
-                val waterPercentageLeft = 1.448 * waterLevel.pow(5.0) - 7.451 *
-                        waterLevel.pow(4.0) + 13.47 * waterLevel.pow(3.0) - 16.09 *
-                        waterLevel.pow(2.0) + 29.96 * waterLevel + 64.13
+                val rawData = it.toDoubleOrNull()
+                val waterLevel = calculateWaterLevel(rawData)
 
                 when {
-                    rawData >= 4095 -> {
+                    waterLevel > 98 -> {
                         binding.statusImageView.setImageResource(R.drawable.ic_ok)
                         binding.statusImageView.setColorFilter(getColor(R.color.color_normal))
                         binding.warningTextView.text = getString(R.string.water_level_full)
                         binding.levelTextView.text = ""
                     }
-                    rawData < 4095 -> {
+                    waterLevel < 98 -> {
                         binding.statusImageView.setImageResource(R.drawable.ic_aviso)
 
                         when {
-                            waterPercentageLeft >= 70 -> binding.statusImageView.setColorFilter(
+                            waterLevel >= 70 -> binding.statusImageView.setColorFilter(
                                 getColor(R.color.color_warning))
-                            waterPercentageLeft >= 30 -> binding.statusImageView.setColorFilter(
+                            waterLevel >= 30 -> binding.statusImageView.setColorFilter(
                                 getColor(R.color.color_caution))
                             else -> binding.statusImageView.setColorFilter(getColor(
                                 R.color.color_critical))
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
                         binding.warningTextView.text = getString(R.string.water_level_dropping)
                         binding.levelTextView.text = getString(R.string.current_water_level,
-                            waterPercentageLeft)
+                            waterLevel)
                     }
                 }
             } else {
@@ -93,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 isBusy = true
                 viewModel.tcpComm(null)
             }
-            R.id.turn_alarm_off_button -> if(!isBusy) lifecycleScope.launch(Dispatchers.Main) {
+            R.id.turn_alarm_off_button -> if (!isBusy) lifecycleScope.launch(Dispatchers.Main) {
                 isBusy = true
                 viewModel.tcpComm("off")
             }
@@ -110,6 +109,12 @@ class MainActivity : AppCompatActivity() {
             else
                 @Suppress("DEPRECATION")
                 vibrator.vibrate(milliseconds)
+    }
+
+    private fun calculateWaterLevel(receivedData: Double?): Double {
+        if (receivedData == null) return 0.0
+
+        return 1.0 * receivedData.pow(1)
     }
 }
 
