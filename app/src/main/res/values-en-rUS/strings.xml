@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Water tank</string>
+    <string name="water_level_full">Water full</string>
+    <string name="water_level_dropping">Water dropping</string>
+    <string name="connection_failed">Connection died</string>
+    <string name="try_again">Try again</string>
+    <string name="current_water_level">Water level %1$d%%</string>
+    <string name="turn_alarm_off">Turn alarm off</string>
+    <string name="check_level">Verify level</string>
+    <string name="status_imageView_contentDescription">Status</string>
+</resources>

@@ -4,7 +4,7 @@
     <string name="water_level_dropping">Caixa d\'água esvaziando</string>
     <string name="connection_failed">Conexão morreu :(</string>
     <string name="try_again">Tente novamente</string>
-    <string name="current_water_level">Nível d\'água: %1$.1f</string>
+    <string name="current_water_level">Nível d\'água: %1$d%%</string>
     <string name="turn_alarm_off">Desligar alarme</string>
     <string name="check_level">Verificar nível</string>
     <string name="status_imageView_contentDescription">status</string>

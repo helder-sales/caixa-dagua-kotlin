@@ -52,16 +52,19 @@ class MainActivity : AppCompatActivity() {
 
                         when {
                             waterLevel >= 70 -> binding.statusImageView.setColorFilter(
-                                getColor(R.color.color_warning))
+                                getColor(R.color.color_warning)
+                            )
                             waterLevel >= 30 -> binding.statusImageView.setColorFilter(
-                                getColor(R.color.color_caution))
-                            else -> binding.statusImageView.setColorFilter(getColor(
-                                R.color.color_critical))
+                                getColor(R.color.color_caution)
+                            )
+                            else -> binding.statusImageView.setColorFilter(
+                                getColor(R.color.color_critical)
+                            )
                         }
 
                         binding.warningTextView.text = getString(R.string.water_level_dropping)
-                        binding.levelTextView.text = getString(R.string.current_water_level,
-                            waterLevel)
+                        binding.levelTextView.text =
+                            getString(R.string.current_water_level, waterLevel)
                     }
                 }
             } else {
@@ -104,17 +107,18 @@ class MainActivity : AppCompatActivity() {
 
         if (vibrator.hasVibrator())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                vibrator.vibrate(VibrationEffect.createOneShot(milliseconds,
-                    VibrationEffect.DEFAULT_AMPLITUDE))
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE)
+                )
             else
                 @Suppress("DEPRECATION")
                 vibrator.vibrate(milliseconds)
     }
 
-    private fun calculateWaterLevel(receivedData: Double?): Double {
-        if (receivedData == null) return 0.0
+    private fun calculateWaterLevel(receivedData: Double?): Int {
+        if (receivedData == null) return 0
 
-        return 1.0 * receivedData.pow(1)
+        return (100 - (receivedData / 2)).toInt()
     }
 }
 
