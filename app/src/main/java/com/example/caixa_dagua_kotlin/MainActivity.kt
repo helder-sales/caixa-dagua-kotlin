@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 val waterLevel = calculateWaterLevel(rawData)
 
                 when {
-                    waterLevel > 98 -> {
+                    waterLevel >= 98 -> {
                         binding.statusImageView.setImageResource(R.drawable.ic_ok)
                         binding.statusImageView.setColorFilter(getColor(R.color.color_normal))
                         binding.warningTextView.text = getString(R.string.water_level_full)
